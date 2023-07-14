@@ -1,0 +1,62 @@
+<% layout('layout/boilerplate') %>
+<div class="row">
+  <h1 class="text-center">New Campground</h1>
+  <div class="col-6 offset-3">
+    <form
+      action="/campgrounds"
+      method="post"
+      novalidate
+      class="needs-validation"
+      enctype="multipart/form-data"
+    >
+      <div>
+        <label class="form-label" for="title">Enter Title</label>
+        <input
+          class="form-control"
+          type="text"
+          name="campground[title]"
+          id="title"
+          required
+        />
+      </div>
+      <div class="mb-2">
+        <label class="form-label" for="location">Enter Location</label>
+        <input
+          class="form-control"
+          type="text"
+          name="campground[location]"
+          id="location"
+          required
+        />
+      </div>
+      <input type="file" name="image" id="image" multiple />
+      <div class="mb-2">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="campground[description]"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+      <div class="mb-2">
+        <span class="form-label" for="price">Enter Price</span>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input
+            type="text"
+            class="form-control"
+            id="price"
+            name="campground[price]"
+            aria-label="price"
+            required
+          />
+          <span class="input-group-text">.00</span>
+        </div>
+      </div>
+
+      <button class="btn btn-dark">Add Campground</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<% layout('layout/boilerplate') %>
+
+<div class="row mt-2">
+  <h1 class="text-center">Edit Campground</h1>
+  <div class="col-6 offset-3">
+    <form
+      action="/campgrounds/<%= campground.id %>?_method=put"
+      method="post"
+      class="needs-validation"
+      novalidate
+      enctype="multipart/form-data"
+    >
+      <div>
+        <label class="form-label" for="title">Enter Title</label>
+        <input
+          class="form-control"
+          type="text"
+          name="campground[title]"
+          id="title"
+          value="<%= campground.title %>"
+          required
+        />
+      </div>
+      <div class="mb-2">
+        <label class="form-label" for="location">Enter Location</label>
+        <input
+          class="form-control"
+          type="text"
+          name="campground[location]"
+          id="location"
+          value="<%= campground.location %>"
+          required
+        />
+      </div>
+      <div class="mb-2">
+        <label class="form-label" for="image">Add Images</label>
+        <input type="file" name="image" id="image" multiple />
+      </div>
+      <div class="mb-2">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="campground[description]"
+          rows="3"
+          required
+        >
+<%= campground.description  %></textarea
+        >
+      </div>
+      <div class="mb-2">
+        <span class="form-label" for="price">Enter Price</span>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input
+            type="text"
+            class="form-control"
+            id="price"
+            name="campground[price]"
+            aria-label="price"
+            value="<%= campground.price %>"
+            required
+          />
+        </div>
+      </div>
+
+      <button class="btn btn-dark mt-2">Edit Campground</button>
+    </form>
+    <a href="/campgrounds">All Campgrounds</a>
+  </div>
+</div>
