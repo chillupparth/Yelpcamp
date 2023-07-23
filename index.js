@@ -15,11 +15,15 @@ const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet')
+const MongoStore = require('connect-mongo');
 
 
 const campgroundRoutes = require('./routes/campground');
 const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
+const { log } = require("console");
 
 
 app.set('view engine', 'ejs')
@@ -30,9 +34,67 @@ app.engine('ejs', ejsMate)
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(mongoSanitize({ replaceWith: '_', }))
+app.use(helmet());
+
+const scriptSrcUrls = [
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+];
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+    "https://cdn.jsdelivr.net",
+];
+const connectSrcUrls = [
+    "https://api.mapbox.com/",
+    "https://a.tiles.mapbox.com/",
+    "https://b.tiles.mapbox.com/",
+    "https://events.mapbox.com/",
+];
+const fontSrcUrls = [];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/dh4eovvec/",
+                "https://images.unsplash.com/",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
+const dbUrl = 'mongodb://127.0.0.1:27017/yelpcamp';
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: process.env.SESSION_SECRET
+    }
+
+});
+
+store.on('error', function (e) {
+    console.log("session store error", e);
+})
 
 const sessionConfig = {
-    secret: "this should be env variable",
+    store,
+    name: 'session',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -53,7 +115,9 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://127.0.0.1:27017/yelpcamp', { useNewUrlParser: true, useUnifiedTopology: true })
+
+
+mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 const db = mongoose.connection;

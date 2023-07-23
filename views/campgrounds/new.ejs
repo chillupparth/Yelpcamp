@@ -1,7 +1,7 @@
 <% layout('layout/boilerplate') %>
 <div class="row">
   <h1 class="text-center">New Campground</h1>
-  <div class="col-6 offset-3">
+  <div class="col-md-6 offset-md-3">
     <form
       action="/campgrounds"
       method="post"
@@ -29,7 +29,7 @@
           required
         />
       </div>
-      <input type="file" name="image" id="image" multiple />
+      <!-- <input type="file" name="image" id="image" multiple /> -->
       <div class="mb-2">
         <label for="description" class="form-label">Description</label>
         <textarea
@@ -43,9 +43,9 @@
       <div class="mb-2">
         <span class="form-label" for="price">Enter Price</span>
         <div class="input-group">
-          <span class="input-group-text">$</span>
+          <span class="input-group-text">&#8377;</span>
           <input
-            type="text"
+            type="number"
             class="form-control"
             id="price"
             name="campground[price]"
@@ -53,6 +53,16 @@
             required
           />
           <span class="input-group-text">.00</span>
+        </div>
+        <div class="input-group mb-3">
+          <input
+            name="image"
+            type="file"
+            class="form-control mt-3"
+            id="image"
+            aria-label="Upload"
+            multiple
+          />
         </div>
       </div>
 
