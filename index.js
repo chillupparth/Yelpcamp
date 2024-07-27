@@ -23,7 +23,6 @@ const MongoStore = require('connect-mongo');
 const campgroundRoutes = require('./routes/campground');
 const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
-const { log } = require("console");
 
 
 app.set('view engine', 'ejs')
@@ -41,6 +40,7 @@ const scriptSrcUrls = [
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
+    "https://cdn.maptiler.com/"
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
@@ -48,12 +48,11 @@ const styleSrcUrls = [
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
     "https://cdn.jsdelivr.net",
+    "https://cdn.maptiler.com/"
 ];
 const connectSrcUrls = [
-    "https://api.mapbox.com/",
-    "https://a.tiles.mapbox.com/",
-    "https://b.tiles.mapbox.com/",
-    "https://events.mapbox.com/",
+
+    "https://api.maptiler.com/"
 ];
 const fontSrcUrls = [];
 app.use(
@@ -71,12 +70,13 @@ app.use(
                 "data:",
                 "https://res.cloudinary.com/dh4eovvec/",
                 "https://images.unsplash.com/",
+                "https://api.maptiler.com/",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
         },
     })
 );
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelpcamp';
+const dbUrl = 'mongodb://127.0.0.1:27017/yelpcamp' || process.env.DB_URL;
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,

@@ -26,22 +26,29 @@ const sample = array => array[Math.floor(Math.random() * array.length)];
 const seedDB = async () => {
     await Campground.deleteMany({});
     for (let i = 0; i < 50; i++) {
-        const random1000 = Math.floor(Math.random() * 1000);
+        const random20 = Math.floor(Math.random() * 20);
         const price = Math.floor(Math.random() * 1000) + 500;
         const camp = new Campground({
             author: "64870bfe2dcea77a01e58c27",
-            location: `${cities[random1000].city}, ${cities[random1000].state}`,
+            location: `${cities[random20].city}, ${cities[random20].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam dolores vero perferendis laudantium, consequuntur voluptatibus nulla architecto, sit soluta esse iure sed labore ipsam a cum nihil atque molestiae deserunt!',
             price,
+            geometry: {
+                type: 'Point',
+                coordinates: [
+                    cities[random20].longitude,
+                    cities[random20].latitude,
+                ]
+            },
             images: [
                 {
-                    url: 'https://res.cloudinary.com/dh4eovvec/image/upload/v1689340220/Yelpcamp/z6gdbfnftkfu1d9jzdkv.jpg',
-                    filename: 'Yelpcamp/z6gdbfnftkfu1d9jzdkv',
+                    url: 'https://res.cloudinary.com/dh4eovvec/image/upload/v1690126115/Yelpcamp/snw3offbfwzsro8alxdw.jpg',
+                    filename: 'Yelpcamp/snw3offbfwzsro8alxdw',
                 },
                 {
-                    url: 'https://res.cloudinary.com/dh4eovvec/image/upload/v1689340217/Yelpcamp/dmnayclagsrxcxj9qsbl.jpg',
-                    filename: 'Yelpcamp/dmnayclagsrxcxj9qsbl',
+                    url: 'https://res.cloudinary.com/dh4eovvec/image/upload/v1690698648/Yelpcamp/y5wmspsfr2tyhsiwx5zg.jpg',
+                    filename: 'Yelpcamp/y5wmspsfr2tyhsiwx5zg',
                 }
             ]
         })
@@ -51,4 +58,5 @@ const seedDB = async () => {
 
 seedDB().then(() => {
     mongoose.connection.close();
+    console.log("Successfully seeded");
 })
