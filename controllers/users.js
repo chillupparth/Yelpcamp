@@ -24,7 +24,8 @@ module.exports.renderRegisterForm = (req, res) => {
 }
 
 module.exports.renderLoginForm = (req, res) => {
-    res.render('users/login');
+    const { demo } = req.query;
+    res.render('users/login', { demo});
 }
 
 module.exports.loginUser = (req, res) => {

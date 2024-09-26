@@ -19,6 +19,9 @@
             <div class="mb-3">
               <label class="form-label" for="username">Username</label>
               <input
+                <% if(demo == "true") {%>
+                value="Interviewer"
+                <% } %>
                 class="form-control"
                 type="text"
                 id="username"
@@ -32,6 +35,9 @@
             <div class="mb-3">
               <label class="form-label" for="password">Password</label>
               <input
+                <% if(demo == "true") {%>
+                value="secretPass"
+                <% } %>
                 class="form-control"
                 type="password"
                 id="password"
