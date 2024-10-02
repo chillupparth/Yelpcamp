@@ -5,8 +5,33 @@ maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 
 module.exports.index = async (req, res) => {
-    const campgrounds = await Campground.find({});
-    res.render('campgrounds/index', { campgrounds })
+    const { location, minPrice, maxPrice } = req.query;
+    let filters = {};
+    let query = {};
+
+    // Apply filtering based on location
+    if (location) {
+        query.location = new RegExp(location, 'i');
+        filters.location = location;
+    }
+
+    // Apply filtering based on minimum price
+    if (minPrice) {
+        query.price = { ...query.price, $gte: minPrice }; 
+        filters.minPrice = minPrice;
+    }
+
+    // Apply filtering based on maximum price
+    if (maxPrice) {
+        query.price = { ...query.price, $lte: maxPrice };
+        filters.maxPrice = maxPrice;
+    }
+
+    // Fetch campgrounds based on the query
+    const campgrounds = await Campground.find(query);
+
+    // Render the filtered campgrounds and pass the current filters to the view
+    res.render('campgrounds/index', { campgrounds, filters });    
 }
 
 module.exports.renderNewForm = (req, res) => {

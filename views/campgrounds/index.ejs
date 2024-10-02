@@ -2,35 +2,58 @@
 <div id="cluster-map"></div>
 <div class="container">
   <h1 class="mb-3 mt-3 text-center">All Campgrounds</h1>
-  <ul class="ps-0">
-    <% for(let camp of campgrounds) {%>
-    <div class="card mb-3">
-      <div class="row">
-        <div class="col-md-4">
-          <%if(camp.images.length) {%>
-          <img class="img-fluid" alt="" src="<%=camp.images[0].url%>" />
-          <% }else {%>
-          <img
-            class="img-fluid"
-            alt=""
-            src="https://res.cloudinary.com//dh4eovvec/image/upload/v1689340220/Yelpcamp/z6gdbfnftkfu1d9jzdkv.jpg"
-          />
-          <% } %>
-        </div>
-        <div class="col-md-8">
-          <h5 class="card-title mt-2"><%= camp.title %></h5>
-          <p class="card-text"><%=camp.description %></p>
-          <small class="text-muted"><%= camp.location %></small>
-          <p class="mt-2">
-            <a href="/campgrounds/<%=camp._id%>" class="btn btn-primary"
-              >View
-            </a>
-          </p>
-        </div>
+  <form class="mb-4" action="/campgrounds" method="GET">
+    <div class="row">
+      <div class="col-md-4">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" class="form-control" id="location" name="location" placeholder="Enter location" value="<%= typeof filters !== 'undefined' ? filters.location : '' %>">
+      </div>
+      <div class="col-md-4">
+        <label for="minPrice" class="form-label">Min Price</label>
+        <input type="number" class="form-control" id="minPrice" name="minPrice" placeholder="Min Price" value="<%= typeof filters !== 'undefined' ? filters.minPrice : '' %>">
+      </div>
+      <div class="col-md-4">
+        <label for="maxPrice" class="form-label">Max Price</label>
+        <input type="number" class="form-control" id="maxPrice" name="maxPrice" placeholder="Max Price" value="<%= typeof filters !== 'undefined' ? filters.maxPrice : '' %>">
       </div>
     </div>
-
-    <% }%>
+    <button type="submit" class="btn btn-primary mt-3">Apply Filter</button>
+  </form>
+  <ul class="ps-0">
+    <% if (campgrounds.length > 0) { %>
+      <% for (let camp of campgrounds) { %>
+      <div class="card mb-4">
+        <div class="row g-0">
+          <div class="col-lg-4 col-md-5">
+            <% if (camp.images.length) { %>
+            <img class="img-fluid w-100 h-100" style="object-fit: cover;" alt="" src="<%= camp.images[0].url %>" />
+            <% } else { %>
+            <img
+              class="img-fluid w-100 h-100" style="object-fit: cover;"
+              alt=""
+              src="https://res.cloudinary.com//dh4eovvec/image/upload/v1689340220/Yelpcamp/z6gdbfnftkfu1d9jzdkv.jpg"
+            />
+            <% } %>
+          </div>
+          <div class="col-lg-8 col-md-7">
+            <div class="card-body">
+              <h5 class="card-title"><%= camp.title %></h5>
+              <p class="card-text"><%= camp.description %></p>
+              <p class="text-muted"><%= camp.location %></p>
+              <p class="card-text">
+                <strong>&#8377;<%= camp.price %>/night</strong>
+              </p>
+              <p class="mt-2">
+                <a href="/campgrounds/<%= camp._id %>" class="btn btn-primary">View</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    <% } else { %>
+      <p>No campgrounds found matching your criteria.</p>
+    <% } %>
   </ul>
 </div>
 
