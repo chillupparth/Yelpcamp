@@ -15,6 +15,7 @@
             method="POST"
             class="needs-validation"
             novalidate
+            id="login-form"
           >
             <div class="mb-3">
               <label class="form-label" for="username">Username</label>
@@ -53,3 +54,12 @@
     </div>
   </div>
 </div>
+
+<script>
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    if(username == "Interviewer" && password == "secretPass") {
+      document.getElementById("login-form").submit(); 
+    }
+</script>
